@@ -61,9 +61,6 @@ def main():
             length = batch.reviewText[1].to(device)
             labels = batch.rating.type(torch.FloatTensor).to(device)
 
-            # print(f'i = {i}\nbatch = {batch}\nlength = {length}\nlabels = {labels}\ninputs:\n')
-            # print(inputs.shape)
-            # print()
             # PyTorch calculates gradients by accumulating contributions
             # to them (useful for RNNs).
             # Hence we must manually set them to zero before calculating them.
@@ -71,7 +68,6 @@ def main():
 
             # Forward pass through the network.
             output = net(inputs, length)
-            # print(f'output.shape = {output}')
             loss = criterion(output, student.convertLabel(labels))
 
             # Calculate gradients.
@@ -106,8 +102,6 @@ def main():
 
                 # Convert network output to integer values.
                 outputs = student.convertNetOutput(net(inputs, length)).flatten()
-                print(f'outputs:\n\t\t{outputs}')
-                print(f'target:\n\t\t{labels}')
 
                 for i in range(5):
                     closeness[i] += torch.sum(abs(labels - outputs) == i).item()
